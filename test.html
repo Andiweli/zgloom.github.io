@@ -74,7 +74,7 @@
             background-color: #000;
         }
 
-        /* Body selbst transparent, damit das Hintergrundbild außen sichtbar ist */
+        /* Body transparent, damit man außerhalb des Rahmens das Hintergrundbild sieht */
         body {
             background-color: transparent;
             overflow-x: hidden;
@@ -127,7 +127,7 @@
         .card {
             max-width: 1100px;
             width: 100%;
-            /* 5% mehr Transparenz: vorher 0.82, jetzt 0.77 */
+            /* etwas transparenter als vorher */
             background: rgba(5, 5, 5, 0.77);
             border-radius: 18px;
             border: 1px solid rgba(111, 214, 115, 0.8);
@@ -135,6 +135,31 @@
             backdrop-filter: blur(8px);
             text-align: left;
             margin-bottom: 2rem;
+        }
+
+        /* Zwei-Spalten-Layout wie früher: Text links, Screenshots rechts */
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .content-main {
+            min-width: 0;
+        }
+
+        .content-screens {
+            min-width: 0;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .content-screens {
+                margin-top: 1.4rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -258,6 +283,7 @@
             border-color: var(--accent);
         }
 
+        /* Screenshots: nebeneinander, wenn Platz; sonst umbrechen */
         .screenshots {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -301,6 +327,7 @@
     </header>
 
     <main class="card">
+        <!-- Lead + Badges bleiben volle Breite -->
         <section class="section">
             <p class="lead">
                 Play Gloom, Gloom Deluxe, Gloom&nbsp;3 and Zombie Massacre today on Windows, macOS,
@@ -321,101 +348,108 @@
             </div>
         </section>
 
-        <section class="section" aria-labelledby="what-is-gloom">
-            <h2 id="what-is-gloom">What is Gloom?</h2>
-            <p>
-                Gloom is a 1995 Amiga first-person shooter by Black Magic Software, known for its fast action,
-                gory combat and heavy hardware demands at the time. Later expanded into Gloom Deluxe / Ultimate Gloom,
-                Gloom&nbsp;3 and Zombie Massacre, the game has become a cult classic. ZGloom is a modern
-                multi-platform re-implementation of the engine.
-            </p>
-        </section>
+        <!-- Ab hier zweispaltig: Text links, Screenshots rechts -->
+        <div class="content-grid">
+            <div class="content-main">
+                <section class="section" aria-labelledby="what-is-gloom">
+                    <h2 id="what-is-gloom">What is Gloom?</h2>
+                    <p>
+                        Gloom is a 1995 Amiga first-person shooter by Black Magic Software, known for its fast action,
+                        gory combat and heavy hardware demands at the time. Later expanded into Gloom Deluxe / Ultimate Gloom,
+                        Gloom&nbsp;3 and Zombie Massacre, the game has become a cult classic. ZGloom is a modern
+                        multi-platform re-implementation of the engine.
+                    </p>
+                </section>
 
-        <section class="section" aria-labelledby="zgloom-features">
-            <h2 id="zgloom-features">ZGloom Features</h2>
-            <ul>
-                <li>
-                    <strong>Modern source port of the Amiga Gloom engine</strong><br>
-                    Runs the original Gloom data files on Android devices (with a focus on OUYA and Android TV-style boxes)
-                    using the modern ZGloom C++ engine.
-                </li>
-                <li>
-                    <strong>Supports multiple official games</strong><br>
-                    Play Gloom, Gloom Deluxe / Ultimate Gloom, Gloom&nbsp;3 and Zombie Massacre (plus selected mods where available).
-                </li>
-                <li>
-                    <strong>Built-in multi-game launcher</strong><br>
-                    If more than one game or mod is present, a simple launcher lets you pick what to play at startup.
-                </li>
-                <li>
-                    <strong>4:3 and 16:9 display modes with FOV control</strong><br>
-                    Switch between the classic 4:3 Amiga look and a widescreen 16:9 mode and adjust the field of view
-                    to match your TV or monitor.
-                </li>
-                <li>
-                    <strong>Improved renderer, lighting and effects</strong><br>
-                    Uses the fixed ZGloom renderer with cleaner perspective, fewer glitches and subtle lighting tweaks,
-                    including dynamic muzzle flashes and colored floor reflections under projectiles and weapon upgrade orbs.
-                </li>
-                <li>
-                    <strong>Atmospheric post-processing overlays (optional)</strong><br>
-                    Enable vignette, film grain and scanlines for a more gritty, CRT-style presentation without changing gameplay.
-                </li>
-                <li>
-                    <strong>Save/Load position and extended options</strong><br>
-                    Save your in-level position (including health, weapon and ammo state) and tweak many more options
-                    than in the original Amiga release.
-                </li>
-            </ul>
-        </section>
+                <section class="section" aria-labelledby="zgloom-features">
+                    <h2 id="zgloom-features">ZGloom Features</h2>
+                    <ul>
+                        <li>
+                            <strong>Modern source port of the Amiga Gloom engine</strong><br>
+                            Runs the original Gloom data files on Android devices (with a focus on OUYA and Android TV-style boxes)
+                            using the modern ZGloom C++ engine.
+                        </li>
+                        <li>
+                            <strong>Supports multiple official games</strong><br>
+                            Play Gloom, Gloom Deluxe / Ultimate Gloom, Gloom&nbsp;3 and Zombie Massacre (plus selected mods where available).
+                        </li>
+                        <li>
+                            <strong>Built-in multi-game launcher</strong><br>
+                            If more than one game or mod is present, a simple launcher lets you pick what to play at startup.
+                        </li>
+                        <li>
+                            <strong>4:3 and 16:9 display modes with FOV control</strong><br>
+                            Switch between the classic 4:3 Amiga look and a widescreen 16:9 mode and adjust the field of view
+                            to match your TV or monitor.
+                        </li>
+                        <li>
+                            <strong>Improved renderer, lighting and effects</strong><br>
+                            Uses the fixed ZGloom renderer with cleaner perspective, fewer glitches and subtle lighting tweaks,
+                            including dynamic muzzle flashes and colored floor reflections under projectiles and weapon upgrade orbs.
+                        </li>
+                        <li>
+                            <strong>Atmospheric post-processing overlays (optional)</strong><br>
+                            Enable vignette, film grain and scanlines for a more gritty, CRT-style presentation without changing gameplay.
+                        </li>
+                        <li>
+                            <strong>Save/Load position and extended options</strong><br>
+                            Save your in-level position (including health, weapon and ammo state) and tweak many more options
+                            than in the original Amiga release.
+                        </li>
+                    </ul>
+                </section>
 
-        <section class="section" aria-labelledby="ports-github">
-            <h2 id="ports-github">Ports &amp; GitHub</h2>
-            <div class="ports-grid">
-                <a class="port-button" href="https://github.com/Andiweli/ZGloom-x86/releases" target="_blank" rel="noopener">
-                    <strong>Windows x86</strong>
-                    <span>PC build</span>
-                </a>
-                <a class="port-button" href="https://github.com/Andiweli/ZGloom-macOS/releases" target="_blank" rel="noopener">
-                    <strong>macOS</strong>
-                    <span>Universal build</span>
-                </a>
-                <a class="port-button" href="https://github.com/Andiweli/ZGloom-Android/releases" target="_blank" rel="noopener">
-                    <strong>Android &amp; OUYA</strong>
-                    <span>Mobile &amp; TV</span>
-                </a>
-                <a class="port-button" href="https://github.com/Andiweli/ZGloom-Vita-Vita2D/releases" target="_blank" rel="noopener">
-                    <strong>PlayStation&nbsp;Vita</strong>
-                    <span>Vita2D port</span>
-                </a>
+                <section class="section" aria-labelledby="ports-github">
+                    <h2 id="ports-github">Ports &amp; GitHub</h2>
+                    <div class="ports-grid">
+                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-x86/releases" target="_blank" rel="noopener">
+                            <strong>Windows x86</strong>
+                            <span>PC build</span>
+                        </a>
+                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-macOS/releases" target="_blank" rel="noopener">
+                            <strong>macOS</strong>
+                            <span>Universal build</span>
+                        </a>
+                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-Android/releases" target="_blank" rel="noopener">
+                            <strong>Android &amp; OUYA</strong>
+                            <span>Mobile &amp; TV</span>
+                        </a>
+                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-Vita-Vita2D/releases" target="_blank" rel="noopener">
+                            <strong>PlayStation&nbsp;Vita</strong>
+                            <span>Vita2D port</span>
+                        </a>
+                    </div>
+                </section>
             </div>
-        </section>
 
-        <section class="section" aria-labelledby="screenshots">
-            <h2 id="screenshots">Screenshots</h2>
-            <div class="screenshots">
-                <figure>
-                    <img src="images/ingame1.jpg" alt="Screenshot of ZGloom" />
-                    <figcaption>Screenshot of ZGloom</figcaption>
-                </figure>
-                <figure>
-                    <img src="images/ingame2.jpg" alt="Screenshot of ZGloom" />
-                    <figcaption>Screenshot of ZGloom</figcaption>
-                </figure>
-                <figure>
-                    <img src="images/ingame3.jpg" alt="Screenshot of ZGloom" />
-                    <figcaption>Screenshot of ZGloom</figcaption>
-                </figure>
-                <figure>
-                    <img src="images/ingame-menu.jpg" alt="Effects options menu of ZGloom" />
-                    <figcaption>Effects options menu of ZGloom</figcaption>
-                </figure>
-                <figure>
-                    <img src="images/ingame-reflections.jpg" alt="Optional bullet reflections in all builds" />
-                    <figcaption>Optional bullet reflections in all builds</figcaption>
-                </figure>
-            </div>
-        </section>
+            <aside class="content-screens" aria-labelledby="screenshots">
+                <section class="section">
+                    <h2 id="screenshots">Screenshots</h2>
+                    <div class="screenshots">
+                        <figure>
+                            <img src="images/ingame1.jpg" alt="Screenshot of ZGloom" />
+                            <figcaption>Screenshot of ZGloom</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="images/ingame2.jpg" alt="Screenshot of ZGloom" />
+                            <figcaption>Screenshot of ZGloom</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="images/ingame3.jpg" alt="Screenshot of ZGloom" />
+                            <figcaption>Screenshot of ZGloom</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="images/ingame-menu.jpg" alt="Effects options menu of ZGloom" />
+                            <figcaption>Effects options menu of ZGloom</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="images/ingame-reflections.jpg" alt="Optional bullet reflections in all builds" />
+                            <figcaption>Optional bullet reflections in all builds</figcaption>
+                        </figure>
+                    </div>
+                </section>
+            </aside>
+        </div>
     </main>
 </div>
 </body>
