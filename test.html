@@ -68,16 +68,22 @@
                          Roboto, sans-serif;
             color: var(--text-main);
             background-color: #000;
-            /* Hintergrundbild direkt am Body – vermeidet Mobile-Bugs */
+        }
+
+        /* Vollbild-Hintergrund, fixiert und scharf */
+        .bg-fixed {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
             background-image: url("images/background.png");
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
-            background-attachment: fixed;
         }
 
         body {
             overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .page-wrap {
@@ -279,6 +285,8 @@
     </style>
 </head>
 <body>
+<div class="bg-fixed"></div>
+
 <div class="page-wrap">
     <header class="hero-header">
         <h1>ZGLOOM</h1>
