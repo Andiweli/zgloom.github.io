@@ -2,9 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="google-site-verification" content="SBkIGmhOn6kUUtjf_pvG_u3uF4fVMt3mDCtPnlY12_E" />
-    <title>ZGloom – Modern Ports of the Amiga Shooter Gloom</title>
+    <title>ZGloom – Modern Amiga Gloom Source Port for Windows, macOS, Android & PS Vita</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Basic SEO -->
+    <meta name="description"
+          content="ZGloom is a modern source port of the classic Amiga FPS Gloom. Play Gloom, Gloom Deluxe, Gloom 3 and Zombie Massacre on Windows, macOS, Android/OUYA and PlayStation Vita with enhanced rendering, widescreen support and modern quality-of-life features." />
+    <meta name="robots" content="index,follow" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://andiweli.github.io/zgloom/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ZGloom – Modern Ports of the Amiga FPS Gloom" />
+    <meta property="og:description"
+          content="Modern source port of the Amiga Gloom engine. Run Gloom, Gloom Deluxe, Gloom 3 and Zombie Massacre on Windows, macOS, Android/OUYA and PlayStation Vita with improved rendering and widescreen support." />
+    <meta property="og:url" content="https://andiweli.github.io/zgloom/" />
+    <meta property="og:image" content="https://andiweli.github.io/zgloom/images/ingame1.jpg" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ZGloom – Modern Ports of the Amiga FPS Gloom" />
+    <meta name="twitter:description"
+          content="Open-source Amiga Gloom source port for Windows, macOS, Android/OUYA and PS Vita with modern rendering and features." />
+    <meta name="twitter:image" content="https://andiweli.github.io/zgloom/images/ingame1.jpg" />
+
+    <!-- Structured Data (SoftwareApplication) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ZGloom",
+      "applicationCategory": "Game",
+      "operatingSystem": "Windows, macOS, Android, PlayStation Vita",
+      "description": "ZGloom is a modern source port of the classic Amiga FPS Gloom, supporting Gloom, Gloom Deluxe, Gloom 3 and Zombie Massacre with improved rendering and widescreen support.",
+      "url": "https://andiweli.github.io/zgloom/",
+      "softwareVersion": "11.2025",
+      "license": "https://opensource.org/licenses",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <style>
         :root {
             --accent: #6fd673;
@@ -27,7 +70,7 @@
             background: transparent;
         }
 
-        /* fixes Hintergrundbild */
+        /* fixes Hintergrundbild – wird nicht mitgescrollt */
         .bg-fixed {
             position: fixed;
             inset: 0;
@@ -38,13 +81,12 @@
             background-size: cover;
         }
 
-        /* kein Body-Scroll, nur die Karte scrollt */
+        /* Body selbst scrollt nicht, nur die Karte */
         body {
             overflow: hidden;
         }
 
-        /* Gesamt-Layout: Überschrift über Karte, alles zentriert,
-           transparenter Abstand um den grünen Rahmen */
+        /* Gesamtlayout: Überschrift über der Karte, transparenter Rand außen */
         .page-wrap {
             height: 100vh;
             display: flex;
@@ -56,14 +98,13 @@
             text-align: center;
         }
 
-        /* Überschrift-Bereich VOR der Karte, ohne Hintergrund,
-           direkt auf der Hintergrundbild-Ebene */
+        /* Hero-Überschrift direkt auf dem Hintergrundbild, außerhalb des grünen Rahmens */
         .hero-header {
-            margin: 0 0 1.5rem;
+            margin: 0 0 1.6rem;
         }
 
         .hero-header h1 {
-            margin: 0 0 0.25rem;
+            margin: 0 0 0.3rem;
             font-size: clamp(2.8rem, 3.5vw, 3.2rem);
             letter-spacing: 0.18em;
             text-transform: uppercase;
@@ -79,19 +120,17 @@
             text-shadow: 0 0 6px rgba(0, 0, 0, 0.85);
         }
 
-        /* Grün umrandete Karte weiter unten – darunter nur Hintergrundbild sichtbar */
+        /* Grün umrandete Karte – weiter unten, Inhalt scrollt */
         .card {
             max-width: 1100px;
             width: 100%;
-            /* Platz für Header oben einkalkulieren:
-               2rem (page padding) + ~5.5rem (Header) + 1.5rem (Abstand) */
-            max-height: calc(100vh - 2rem - 5.5rem - 1.5rem);
-            background: rgba(5, 5, 5, 0.82);   /* Abdunkelung nur innerhalb des Rahmens */
+            max-height: calc(100vh - 2rem - 5.5rem - 1.6rem); /* Höhe der Überschrift berücksichtigen */
+            background: rgba(5, 5, 5, 0.82);
             border-radius: 18px;
-            border: 1px solid rgba(111, 214, 115, 0.8); /* grüner Rahmen */
+            border: 1px solid rgba(111, 214, 115, 0.8);
             padding: 2.5rem 2.25rem 2.75rem;
             backdrop-filter: blur(8px);
-            overflow: auto;                    /* Inhalt der Karte scrollt */
+            overflow: auto;
             text-align: left;
         }
 
@@ -106,18 +145,74 @@
                 font-size: 1.1rem;
             }
             .card {
-                max-height: calc(100vh - 1.5rem - 5rem - 1.2rem);
+                max-height: calc(100vh - 1.5rem - 5rem - 1.4rem);
                 padding: 2.0rem 1.5rem 2.2rem;
             }
         }
 
-        .subtitle {
-            margin: 0 0 1.5rem;
-            font-size: 1.5rem;
-            font-style:italic;
-            line-height:1.6;
-            padding-bottom: 1.3rem;
+        h2 {
+            margin-top: 1.6rem;
+            margin-bottom: 0.6rem;
+            font-size: 1.45rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 0.9rem;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        /* hervorgehobener Lead-Text */
+        .lead {
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 1.4rem;
+        }
+
+        .muted {
             color: var(--text-muted);
+        }
+
+        ul {
+            padding-left: 1.3rem;
+            margin-top: 0.2rem;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 1.8rem;
+        }
+
+        .badge-column {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            margin-bottom: 1.3rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            background: #222;
+            border: 1px solid rgba(111, 214, 115, 0.9);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .badge-label {
+            opacity: 0.7;
+            margin-right: 0.35rem;
         }
 
         .content-grid {
@@ -132,55 +227,9 @@
             }
         }
 
-        h2 {
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-            font-size: 1.45rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        /* +20% Content-Größe */
-        p {
-            margin-top: 0;
-            line-height: 1.6;
-            font-size: 1.18rem;
-        }
-
-        ul {
-            padding-left: 1.3rem;
-            margin: 0.4rem 0 0;
-            font-size: 1.15rem;
-            line-height: 1.5;
-        }
-
-        .section {
-            margin-bottom: 1.8rem;
-        }
-
-        .screenshots {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .screenshots img {
-            width: 100%;
-            display: block;
-            border-radius: 12px;
-            border: 1px solid rgba(111, 214, 115, 0.35);
-        }
-
-        .screenshots small {
-            display: block;
-            margin-top: 0.2rem;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-
         .ports-title {
-            margin-top: 1.2rem;
-            margin-bottom: 0.8rem;
+            margin-top: 1.4rem;
+            margin-bottom: 0.7rem;
         }
 
         .ports-grid {
@@ -195,203 +244,195 @@
             }
         }
 
-        /* zweizeilige Buttons, ohne Icons */
         .port-button {
             display: inline-flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 0.8rem 1.1rem;
-            border-radius: 999px;
-            border: none;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: #071208;
+            border-radius: 10px;
+            border: 1px solid rgba(111, 214, 115, 0.7);
+            background: #111;
+            color: var(--text-main);
             text-decoration: none;
-            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .port-button strong {
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-size: 0.96rem;
-            line-height: 1.2;
-            text-align: center;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.15rem;
         }
 
         .port-button span {
             font-size: 0.86rem;
-            opacity: 0.9;
-            text-transform: none;
-            letter-spacing: 0.03em;
+            color: var(--text-muted);
         }
 
         .port-button:hover,
         .port-button:focus-visible {
-            filter: brightness(1.08);
-            transform: translateY(-1px);
+            border-color: var(--accent);
         }
 
-        .port-button:active {
-            transform: translateY(0);
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 0.9rem;
+            margin-top: 0.6rem;
         }
 
-    .badge-column {
-        display: inline-flex;        /* Container selbst so breit wie der längste Badge */
-        flex-direction: column;      /* Badges untereinander */
-        align-items: flex-start;
-        gap: 6px;                    /* vertikaler Abstand zwischen den Badges */
-        margin-bottom: 1.2rem;
-    }
+        .screenshots figure {
+            margin: 0;
+        }
 
-    .badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.28rem 0.75rem;
-        border-radius: 999px;
-        background: #222;
-        border: 1px solid rgba(111, 214, 115, 0.9);
-        font-size: 0.85rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #f4f4f4;
-        white-space: nowrap;
-        margin-bottom: 6px; /* vertikaler Abstand zwischen den Badges */
-    }
+        .screenshots img {
+            width: 100%;
+            display: block;
+            border-radius: 10px;
+            border: 1px solid rgba(111, 214, 115, 0.35);
+        }
 
-    .badge-label {
-        opacity: 0.7;
-        margin-right: 0.35rem;
-    }
-</style>
-    
+        .screenshots figcaption {
+            margin-top: 0.25rem;
+            font-size: 0.86rem;
+            color: var(--text-muted);
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        a:hover {
+            color: var(--accent-dark);
+        }
+    </style>
 </head>
 <body>
 <div class="bg-fixed"></div>
 
 <div class="page-wrap">
-    <!-- Überschrift-Bereich NUR auf Hintergrundbild, außerhalb des grünen Rahmens -->
+    <!-- Überschrift außerhalb des grünen Rahmens, direkt auf dem Hintergrundbild -->
     <header class="hero-header">
         <h1>ZGLOOM</h1>
         <h2>MODERN PORTS OF THE AMIGA FPS GLOOM</h2>
     </header>
 
-    <!-- Grün umrandete, nach unten gerückte Karte -->
+    <!-- Grün umrandete Karte mit dem eigentlichen Inhalt -->
     <main class="card">
-        <header>
-            <p class="subtitle">
-                Play Gloom, Gloom Deluxe, Gloom 3 and Zombie Massacre today on Windows,
-                macOS, Android/OUYA and PlayStation&nbsp;Vita with enhanced rendering,
-                widescreen support and extended quality-of-life features.
+        <!-- Lead-Text + Badges oben in der Karte -->
+        <section class="section">
+            <p class="lead">
+                Play Gloom, Gloom Deluxe, Gloom&nbsp;3 and Zombie Massacre today on Windows, macOS,
+                Android/OUYA and PlayStation&nbsp;Vita with enhanced rendering, widescreen support and
+                extended quality-of-life features.
             </p>
-        </header>
 
-        <section class="content-grid">
-            <!-- Left column -->
-            <div>
-                <section class="section">
-                    <h2>What is Gloom?</h2>
-                    <p>
-                        Gloom is a 1995 Amiga first-person shooter by Black Magic Software,
-                        known for its fast action, gory combat and heavy hardware demands at
-                        the time. Later expanded into Gloom Deluxe / Ultimate Gloom,
-                        Gloom&nbsp;3 and Zombie Massacre, the game has become a cult classic.
-                        ZGloom is a modern multi-platform re-implementation of the engine.
-                    </p>
-                </section>
-
-<div class="badge-column">
-    <div class="badge">
-        <span class="badge-label">Platform</span>Windows · macOS · Android · Vita
-    </div>
-    <div class="badge">
-        <span class="badge-label">Engine</span>Black Magic Engine
-    </div>
-    <div class="badge">
-        <span class="badge-label">Code</span>SDL2 · C++
-    </div>
-</div>
-                
-                <section class="section">
-                    <h2>ZGloom Features</h2>
-                    <ul>
-    <li>
-        <strong>Modern source port of the Amiga Gloom engine</strong><br>
-        Runs the original Gloom data files on Android devices (with a focus on OUYA and Android TV-style boxes) using the modern ZGloom C++ engine.
-    </li>
-    <li>
-        <strong>Supports multiple official games</strong><br>
-        Play Gloom, Gloom Deluxe / Ultimate Gloom, Gloom 3 and Zombie Massacre (plus selected mods where available).
-    </li>
-    <li>
-        <strong>Built-in multi-game launcher</strong><br>
-        If more than one game or mod is present, a simple launcher lets you pick what to play at startup.
-    </li>
-    <li>
-        <strong>4:3 and 16:9 display modes with FOV control</strong><br>
-        Switch between the classic 4:3 Amiga look and a widescreen 16:9 mode and adjust the field of view to match your TV or monitor.
-    </li>
-    <li>
-        <strong>Improved renderer, lighting and effects</strong><br>
-        Uses the fixed ZGloom renderer with cleaner perspective, fewer glitches and subtle lighting tweaks, including dynamic muzzle flashes and colored floor reflections under projectiles and weapon upgrade orbs.
-    </li>
-    <li>
-        <strong>Atmospheric post-processing overlays (optional)</strong><br>
-        Enable vignette, film grain and scanlines for a more gritty, CRT-style presentation without changing gameplay.
-    </li>
-    <li>
-        <strong>Save/Load position and extended options</strong><br>
-        Save your in-level position (including health, weapon and ammo state) and tweak many more options than in the original Amiga release.
-    </li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 class="ports-title">Ports & GitHub</h2>
-                    <div class="ports-grid">
-                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-x86/releases" target="_blank" rel="noopener">
-                            Windows x86
-                            <span>PC build</span>
-                        </a>
-                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-macOS/releases" target="_blank" rel="noopener">
-                            macOS
-                            <span>Universal build</span>
-                        </a>
-                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-Android/releases" target="_blank" rel="noopener">
-                            Android &amp; OUYA
-                            <span>Mobile &amp; TV</span>
-                        </a>
-                        <a class="port-button" href="https://github.com/Andiweli/ZGloom-Vita-Vita2D/releases" target="_blank" rel="noopener">
-                            PlayStation&nbsp;Vita
-                            <span>Vita2D port</span>
-                        </a>
-                    </div>
-                </section>
+            <div class="badge-column">
+                <div class="badge">
+                    <span class="badge-label">Platform</span>Windows · macOS · Android · Vita
+                </div>
+                <div class="badge">
+                    <span class="badge-label">Engine</span>Black Magic Engine
+                </div>
+                <div class="badge">
+                    <span class="badge-label">Code</span>SDL2 · C++
+                </div>
             </div>
+        </section>
 
-            <!-- Right column -->
-            <div>
-                <section class="section">
-                    <h2>Screenshots</h2>
-                    <div class="screenshots">
-                        <figure>
-                            <img src="images/ingame1.jpg" alt="ZGloom ingame screenshot 1" />
-                            <small>Screenshot of ZGloom</small>
-                        </figure>
-                        <figure>
-                            <img src="images/ingame2.jpg" alt="ZGloom ingame screenshot 2" />
-                            <small>Screenshot of ZGloom</small>
-                        </figure>
-                        <figure>
-                            <img src="images/ingame3.jpg" alt="ZGloom ingame screenshot 3" />
-                            <small>Screenshot of ZGloom</small>
-                        </figure>
-                        <figure>
-                            <img src="images/ingame-menu.jpg" alt="ZGloom ingame menu" />
-                            <small>Effects options menu of ZGloom</small>
-                        </figure>
-                        <figure>
-                            <img src="images/ingame-reflections.jpg" alt="ZGloom reflections screenshot" />
-                            <small>Optional bullet reflections in all builds</small>
-                        </figure>
-                    </div>
-                </section>
+        <section class="section" aria-labelledby="what-is-gloom">
+            <h2 id="what-is-gloom">What is Gloom?</h2>
+            <p>
+                Gloom is a 1995 Amiga first-person shooter by Black Magic Software, known for its fast action,
+                gory combat and heavy hardware demands at the time. Later expanded into Gloom Deluxe / Ultimate Gloom,
+                Gloom&nbsp;3 and Zombie Massacre, the game has become a cult classic. ZGloom is a modern
+                multi-platform re-implementation of the engine.
+            </p>
+        </section>
+
+        <section class="section" aria-labelledby="zgloom-features">
+            <h2 id="zgloom-features">ZGloom Features</h2>
+            <ul>
+                <li>
+                    <strong>Modern source port of the Amiga Gloom engine</strong><br>
+                    Runs the original Gloom data files on Android devices (with a focus on OUYA and Android TV-style boxes)
+                    using the modern ZGloom C++ engine.
+                </li>
+                <li>
+                    <strong>Supports multiple official games</strong><br>
+                    Play Gloom, Gloom Deluxe / Ultimate Gloom, Gloom&nbsp;3 and Zombie Massacre (plus selected mods where available).
+                </li>
+                <li>
+                    <strong>Built-in multi-game launcher</strong><br>
+                    If more than one game or mod is present, a simple launcher lets you pick what to play at startup.
+                </li>
+                <li>
+                    <strong>4:3 and 16:9 display modes with FOV control</strong><br>
+                    Switch between the classic 4:3 Amiga look and a widescreen 16:9 mode and adjust the field of view
+                    to match your TV or monitor.
+                </li>
+                <li>
+                    <strong>Improved renderer, lighting and effects</strong><br>
+                    Uses the fixed ZGloom renderer with cleaner perspective, fewer glitches and subtle lighting tweaks,
+                    including dynamic muzzle flashes and colored floor reflections under projectiles and weapon upgrade orbs.
+                </li>
+                <li>
+                    <strong>Atmospheric post-processing overlays (optional)</strong><br>
+                    Enable vignette, film grain and scanlines for a more gritty, CRT-style presentation without changing gameplay.
+                </li>
+                <li>
+                    <strong>Save/Load position and extended options</strong><br>
+                    Save your in-level position (including health, weapon and ammo state) and tweak many more options
+                    than in the original Amiga release.
+                </li>
+            </ul>
+        </section>
+
+        <section class="section" aria-labelledby="ports-github">
+            <h2 id="ports-github">Ports &amp; GitHub</h2>
+            <div class="ports-grid">
+                <a class="port-button" href="https://github.com/Andiweli/ZGloom-x86/releases" target="_blank" rel="noopener">
+                    <strong>Windows x86</strong>
+                    <span>PC build</span>
+                </a>
+                <a class="port-button" href="https://github.com/Andiweli/ZGloom-macOS/releases" target="_blank" rel="noopener">
+                    <strong>macOS</strong>
+                    <span>Universal build</span>
+                </a>
+                <a class="port-button" href="https://github.com/Andiweli/ZGloom-Android/releases" target="_blank" rel="noopener">
+                    <strong>Android &amp; OUYA</strong>
+                    <span>Mobile &amp; TV</span>
+                </a>
+                <a class="port-button" href="https://github.com/Andiweli/ZGloom-Vita-Vita2D/releases" target="_blank" rel="noopener">
+                    <strong>PlayStation&nbsp;Vita</strong>
+                    <span>Vita2D port</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="screenshots">
+            <h2 id="screenshots">Screenshots</h2>
+            <div class="screenshots">
+                <figure>
+                    <img src="images/ingame1.jpg" alt="Screenshot of ZGloom" />
+                    <figcaption>Screenshot of ZGloom</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/ingame2.jpg" alt="Screenshot of ZGloom" />
+                    <figcaption>Screenshot of ZGloom</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/ingame3.jpg" alt="Screenshot of ZGloom" />
+                    <figcaption>Screenshot of ZGloom</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/ingame-menu.jpg" alt="Effects options menu of ZGloom" />
+                    <figcaption>Effects options menu of ZGloom</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/ingame-reflections.jpg" alt="Optional bullet reflections in all builds" />
+                    <figcaption>Optional bullet reflections in all builds</figcaption>
+                </figure>
             </div>
         </section>
     </main>
